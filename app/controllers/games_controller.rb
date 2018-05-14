@@ -9,7 +9,6 @@ class GamesController < ApplicationController
   end
 
   def english_word
-    @answer = params[:word]
     url = "https://wagon-dictionary.herokuapp.com/#{@answer}"
     word_dictionary = open(url).read
     word = JSON.parse(word_dictionary)
@@ -18,15 +17,13 @@ class GamesController < ApplicationController
 
   # The method returns true if the block never returns false or nil
   def letter_in_grid
-    @grid = params[:grid]
-    @answer = params[:word]
     @answer.chars.sort.all? { |letter| @grid.include?(letter) }
   end
 
   def score
     @grid = params[:grid]
     @answer = params[:word]
-    grid_letters = @grid.each_char { |letter| print letter, ', '}
+    grid_letters = @grid.each_char { |letter| print letter, ''}
     if !letter_in_grid
       @result = "Sorry, but #{@answer.upcase} can’t be built out of #{grid_letters}."
     elsif !english_word
